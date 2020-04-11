@@ -2,7 +2,7 @@ const expenses = [{
     id: '1',
     description: 'Gum',
     note: '',
-    amount: 19,
+    amount: 195,
     createdAt: 0
 }, {
     id: '2',

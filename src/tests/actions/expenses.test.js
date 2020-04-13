@@ -3,6 +3,7 @@ import {
   addExpense,
   editExpense,
   removeExpense,
+  startRemoveExpense,
   setExpenses,
   startSetExpenses
 } from "../../actions/expenses";
@@ -14,6 +15,10 @@ import configureStore from "../../store/configure-store";
 import database from "../../firebase/firebase";
 
 const createMockStore = configureMockStore([thunk]);
+
+beforeAll((done)=>{
+  done();
+});
 
 beforeEach((done) => {
   const expensesData = expenses.reduce(
@@ -44,6 +49,23 @@ test("should setup remove expense action object", () => {
     id: "123abc",
   });
 });
+
+test(
+  'should remove expense from database and store',
+  (done) => {
+    const store = createMockStore({});
+    const id = expenses[0].id;
+    store.dispatch(startRemoveExpense({ id }))
+    .then(()=>{
+      return database.ref(`expenses/${id}`).once('value');
+      done();
+    })
+    .then((snapshot)=>{
+      expect(snapshot.val()).toEqual(null);
+      done();
+    });
+  }
+);
 
 test("should setup edit expense action object", () => {
   const now = moment();
@@ -162,4 +184,4 @@ test(
             done();
         });
     }
-)
+);

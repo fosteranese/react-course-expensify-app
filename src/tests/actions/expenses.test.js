@@ -103,7 +103,7 @@ test("should edit expense in database and store", (done) => {
 
   store
     .dispatch(startEditExpense(id, updates))
-    .then(() => {
+    .then((done) => {
       const actions = store.getActions();
       expect(actions[0]).toEqual({
         type: "EDIT_EXPENSE",
